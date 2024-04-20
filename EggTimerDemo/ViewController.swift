@@ -7,35 +7,41 @@
 
 import UIKit
 
+
 class ViewController: UIViewController {
 
-    var  eggTimes = [ "Soft": 300, "Medium": 420, "Hard": 720 ]
+    @IBOutlet weak var titleLB: UILabel!
+    @IBOutlet weak var progressView: UIProgressView!
+    var  eggTimes = [ "Soft": 3, "Medium": 7, "Hard": 12 ]
     
-    
+    var totalTime = 0
+    var secondsPassed = 0
+    var time = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-
-    
-    var secondsRemaining = 60
     
     @IBAction func hardNessBottonPressed(_ sender: UIButton) {
-        
+        time.invalidate()
         let hardness = sender.currentTitle!
-        secondsRemaining = eggTimes[hardness]!
-        print(hardness)
+        totalTime = eggTimes[hardness]!
+        progressView.progress = 0.0
+        secondsPassed = 0
+        titleLB.text = hardness
         
-        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+       time = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
         @objc func updateTimer() {
-            if secondsRemaining > 0 {
-                print("\(secondsRemaining) seconds.")
-                secondsRemaining -= 1
+            if secondsPassed < totalTime {
+                secondsPassed += 1
+                progressView.progress = Float(secondsPassed) / Float(totalTime)
+            } else {
+                time.invalidate()
+                titleLB.text = "DONE!"
+            }
             
-        }
-      
     }
 }
 
