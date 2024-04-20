@@ -9,28 +9,33 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let softTime = 5
-    let mediumTime = 7
-    let hardTime = 12
+    var  eggTimes = [ "Soft": 300, "Medium": 420, "Hard": 720 ]
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
 
+    
+    var secondsRemaining = 60
+    
     @IBAction func hardNessBottonPressed(_ sender: UIButton) {
         
-         let hardness = sender.currentTitle
-        switch hardness {
-        case "Soft":
-            print(softTime)
-        case "Medium":
-            print(mediumTime)
-        case "Hard":
-            print(hardTime)
-        default:
-            print("Error code")
+        let hardness = sender.currentTitle!
+        secondsRemaining = eggTimes[hardness]!
+        print(hardness)
+        
+        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+    }
+        @objc func updateTimer() {
+            if secondsRemaining > 0 {
+                print("\(secondsRemaining) seconds.")
+                secondsRemaining -= 1
+            
         }
+      
     }
 }
 
